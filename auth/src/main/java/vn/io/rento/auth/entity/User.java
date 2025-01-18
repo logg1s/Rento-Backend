@@ -2,14 +2,18 @@ package vn.io.rento.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@DynamicInsert
+@DynamicUpdate
 public class User extends BaseEntity {
     @Id
     private String username;
@@ -28,10 +32,9 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private boolean enabled;
+    private Boolean enabled = true;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @Cascade(CascadeType.ALL)
-    private Set<Role> role;
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_username"), inverseJoinColumns = @JoinColumn(name = "role_name"))
+    private Set<Role> roles;
 }
-

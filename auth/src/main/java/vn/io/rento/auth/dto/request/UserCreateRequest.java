@@ -6,9 +6,10 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
-public class UserRequest {
+public class UserCreateRequest {
     @NotNull
     private String username;
 
@@ -28,4 +29,8 @@ public class UserRequest {
     private String lastName;
 
     private LocalDate dateOfBirth;
+
+    private Set<String> roles;
+
+    private Boolean enabled;
 }

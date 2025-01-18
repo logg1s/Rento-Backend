@@ -17,7 +17,11 @@ public enum EError {
     ACCOUNT_WRONG_CREDENTIALS("Account wrong Credentials !", HttpStatus.BAD_REQUEST),
     TOKEN_EXPIRED("Token expired !", HttpStatus.UNAUTHORIZED),
     TOKEN_INVALID("Token Invalid !", HttpStatus.UNAUTHORIZED),
-    TOKEN_MISMATCH("Token Mismatch !", HttpStatus.UNAUTHORIZED);
+    TOKEN_MISMATCH("Token Mismatch !", HttpStatus.UNAUTHORIZED),
+    ROLE_ALREADY_EXISTED("Role already existed !", HttpStatus.CONFLICT),
+    ROLE_NOT_FOUND("Role not found !", HttpStatus.NOT_FOUND),
+    PERMISSION_ALREADY_EXISTED("Permission already existed !", HttpStatus.CONFLICT),
+    PERMISSION_NOT_FOUND("Permission not found !", HttpStatus.NOT_FOUND);
 
 
     private final String message;

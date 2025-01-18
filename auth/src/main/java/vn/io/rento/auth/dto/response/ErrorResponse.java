@@ -15,5 +15,5 @@ public class ErrorResponse<T> {
     private String message;
     private T errors;
     private String path;
-    private LocalDateTime time;
+    private String time;
 }

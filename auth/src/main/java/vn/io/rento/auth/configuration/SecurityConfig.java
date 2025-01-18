@@ -25,7 +25,8 @@ public class SecurityConfig {
             "/auth/token", "/auth/validate", "/auth/logout", "/auth/refresh"
     };
     private final CustomJwtDecoder customJwtDecoder;
-    private final String prefixPath = "/v1/";
+    private final String prefixPath = "/v1";
+
     public SecurityConfig(@Lazy CustomJwtDecoder customJwtDecoder) {
         this.customJwtDecoder = customJwtDecoder;
     }
@@ -34,10 +35,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request -> request.requestMatchers(HttpMethod.POST, Arrays.stream(PUBLIC_POST_ENDPOINTS).map(s -> prefixPath + s).toArray(String[]::new))
                 .permitAll()
-//                .requestMatchers("/context-path/swagger-ui.html")
-//                .permitAll()
+                .requestMatchers("/context-path/swagger-ui.html")
+                .permitAll()
                 .anyRequest()
-                .permitAll());
+                .authenticated());
 
         httpSecurity.oauth2ResourceServer(oAuth2ResourceServerConfigurer -> oAuth2ResourceServerConfigurer
                 .jwt(jwtConfigurer -> jwtConfigurer

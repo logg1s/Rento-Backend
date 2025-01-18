@@ -8,6 +8,5 @@ public class PermissionRequest {
     @NotNull
     private String name;
 
-    @NotNull
     private String description;
 }

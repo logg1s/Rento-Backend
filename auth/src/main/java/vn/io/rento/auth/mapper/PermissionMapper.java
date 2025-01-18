@@ -9,8 +9,8 @@ public class PermissionMapper {
     }
 
     public static Permission toPermission(PermissionRequest permissionRequest, Permission permission) {
-        permission.setName(permissionRequest.getName());
-        permission.setDescription(permissionRequest.getDescription());
+        permission.setName(permissionRequest.getName() == null ? permission.getName() : permissionRequest.getName());
+        permission.setDescription(permissionRequest.getDescription() == null ? permission.getDescription() : permissionRequest.getDescription());
         return permission;
     }
 

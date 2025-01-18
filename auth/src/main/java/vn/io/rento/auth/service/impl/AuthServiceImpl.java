@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
             throw new CustomException(e.getMessage());
         }
 
-        return new IntrospectResponse(validToken == null);
+        return new IntrospectResponse(validToken != null);
     }
 
     public TokenResponse refreshToken(TokenRequest request) {
@@ -214,7 +214,7 @@ public class AuthServiceImpl implements AuthService {
             signedJWT.sign(new MACSigner(secretKey));
             return signedJWT;
         } catch (JOSEException e) {
-            log.error("Cannot create token");
+            log.error("Cannot create token", e);
             throw new CustomException("Cannot create token");
         }
     }
@@ -222,11 +222,11 @@ public class AuthServiceImpl implements AuthService {
     private String buildRoles(User user) {
         StringJoiner stringJoiner = new StringJoiner(" ");
 
-        if (!user.getRole().isEmpty()) {
+        if (!user.getRoles().isEmpty()) {
             Set<String> set = new HashSet<>();
-            for (Role role : user.getRole()) {
+            for (Role role : user.getRoles()) {
                 set.add("ROLE_" + role.getName());
-                for (Permission permission : role.getPermission()) {
+                for (Permission permission : role.getPermissions()) {
                     set.add(permission.getName());
                 }
             }

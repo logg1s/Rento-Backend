@@ -3,7 +3,8 @@ package vn.io.rento.auth.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.io.rento.auth.dto.request.UserRequest;
+import vn.io.rento.auth.dto.request.UserCreateRequest;
+import vn.io.rento.auth.dto.request.UserUpdateRequest;
 import vn.io.rento.auth.dto.response.UserResponse;
 import vn.io.rento.auth.service.UserService;
 
@@ -19,13 +20,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
-        return ResponseEntity.ok(userService.createUser(userRequest));
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserCreateRequest userCreateRequest) {
+        return ResponseEntity.ok(userService.createUser(userCreateRequest));
     }
 
     @PutMapping
-    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest userRequest) {
-        return ResponseEntity.ok(userService.updateUser(userRequest));
+    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
+        return ResponseEntity.ok(userService.updateUser(userUpdateRequest));
     }
 
     @DeleteMapping("{userId}")

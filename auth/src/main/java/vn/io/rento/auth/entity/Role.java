@@ -1,19 +1,19 @@
 package vn.io.rento.auth.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
+@DynamicInsert
+@DynamicUpdate
 public class Role extends BaseEntity {
     @Id
     @NonNull
@@ -23,13 +23,12 @@ public class Role extends BaseEntity {
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @Cascade(CascadeType.ALL)
+    @JoinTable(name = "role_permission", joinColumns = @JoinColumn(name = "role_name"), inverseJoinColumns = @JoinColumn(name = "permission_name"))
     @NonNull
-    private Set<Permission> permission;
+    private Set<Permission> permissions;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "role")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
     @ToString.Exclude
-    private Set<User> user;
-
+    @EqualsAndHashCode.Exclude
+    private Set<User> users;
 }
-

@@ -14,5 +14,5 @@ public class RoleRequest {
     private String description;
 
     @NotNull
-    private Set<String> permission;
+    private Set<String> permissions;
 }
