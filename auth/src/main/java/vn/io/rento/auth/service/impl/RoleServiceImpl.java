@@ -1,5 +1,6 @@
 package vn.io.rento.auth.service.impl;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import vn.io.rento.auth.dto.request.RoleRequest;
 import vn.io.rento.auth.dto.response.RoleResponse;
@@ -27,6 +28,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name())")
     public RoleResponse create(RoleRequest roleRequest) {
         Set<String> requestedPermissions = roleRequest.getPermissions();
 
@@ -41,11 +43,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name())")
     public List<RoleResponse> getAllRoles() {
         return roleRepository.findAll().stream().map(role -> RoleMapper.toRoleResponse(role, new RoleResponse())).toList();
     }
 
     @Override
+    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name())")
     public void deleteRole(String roleName) {
         roleRepository.deleteById(roleName);
     }

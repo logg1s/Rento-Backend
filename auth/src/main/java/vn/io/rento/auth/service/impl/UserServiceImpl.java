@@ -1,6 +1,5 @@
 package vn.io.rento.auth.service.impl;
 
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,22 +46,29 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(EError.EMAIL_ALREADY_EXISTED);
         }
         if (roleRepository.existsAllByNameIn(userCreateRequest.getRoles())) {
-            Set<Role> roles = new HashSet<>(roleRepository.findAllById(userCreateRequest.getRoles()));
             User user = UserMapper.toUser(userCreateRequest, new User());
             user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
+            Set<Role> roles = null;
+            if (hasRole(ERole.ADMIN.name())) {
+                roles = new HashSet<>(roleRepository.findAllById(userCreateRequest.getRoles()));
+            } else {
+                roles = new HashSet<>(roleRepository.findAllByNameAndNameNotIn(ERole.ADMIN.name(), userCreateRequest.getRoles()));
+            }
             user.setRoles(roles);
             User userSaved = userRepository.save(user);
             return UserMapper.toUserResponse(userSaved, new UserResponse());
         }
         throw new CustomException(EError.ROLE_NOT_FOUND);
     }
+
     private boolean hasRole(String roleName) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth != null && auth.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_" + roleName));
     }
+
     @Override
-    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name()) || #userUpdateRequest.username == authentication.name")
+    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name()) || #userUpdateRequest.username == authentication.name && hasAuthority('WRITE')")
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
         String requestedEmail = userUpdateRequest.getEmail();
         String requestedUsername = userUpdateRequest.getUsername();
@@ -101,14 +107,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PostAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name()) || returnObject.username == authentication.name && hasAuthority('READ')")
+    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name()) || #username == authentication.name && hasAuthority('READ')")
     public UserResponse getUser(String username) {
         User user = userRepository.findById(username).orElseThrow(() -> new CustomException(EError.USER_NOT_FOUND));
         return UserMapper.toUserResponse(user, new UserResponse());
     }
 
     @Override
-    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name())")
+    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name()) || #username == authentication.name && hasAuthority('WRITE')")
     public void deleteUser(String username) {
         userRepository.deleteById(username);
     }

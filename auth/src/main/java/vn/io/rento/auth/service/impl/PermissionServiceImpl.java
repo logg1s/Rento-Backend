@@ -1,5 +1,6 @@
 package vn.io.rento.auth.service.impl;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import vn.io.rento.auth.dto.request.PermissionRequest;
 import vn.io.rento.auth.dto.response.PermissionResponse;
@@ -20,6 +21,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name())")
     public PermissionResponse create(PermissionRequest permissionRequest) {
         Permission permission = PermissionMapper.toPermission(permissionRequest, new Permission());
         return PermissionMapper.toPermissionResponse(
@@ -28,11 +30,13 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name())")
     public List<PermissionResponse> getAllPermissions() {
         return permissionRepository.findAll().stream().map(permission -> PermissionMapper.toPermissionResponse(permission, new PermissionResponse())).collect(Collectors.toList());
     }
 
     @Override
+    @PreAuthorize("hasRole(T(vn.io.rento.auth.enums.ERole).ADMIN.name())")
     public void delete(String permissionId) {
         permissionRepository.deleteById(permissionId);
     }

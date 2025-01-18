@@ -1,8 +1,7 @@
 package vn.io.rento.auth.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -12,6 +11,9 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
 public class User extends BaseEntity {

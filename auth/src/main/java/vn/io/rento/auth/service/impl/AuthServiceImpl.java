@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
     public TokenResponse getToken(AccountRequest request) {
         User user = userRepository
                 .findById(request.getUsername())
-                .orElseThrow(() -> new CustomException(EError.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(EError.ACCOUNT_WRONG_CREDENTIALS));
         boolean isAuth = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if (!isAuth) {
             throw new CustomException(EError.ACCOUNT_WRONG_CREDENTIALS);

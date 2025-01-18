@@ -5,12 +5,10 @@ import vn.io.rento.auth.dto.request.UserCreateRequest;
 import vn.io.rento.auth.dto.request.UserUpdateRequest;
 import vn.io.rento.auth.dto.response.RoleResponse;
 import vn.io.rento.auth.dto.response.UserResponse;
-import vn.io.rento.auth.entity.Role;
 import vn.io.rento.auth.entity.User;
 
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+
 @Component
 public class UserMapper {
     private UserMapper() {

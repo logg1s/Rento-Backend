@@ -3,7 +3,6 @@ package vn.io.rento.auth.mapper;
 import vn.io.rento.auth.dto.request.RoleRequest;
 import vn.io.rento.auth.dto.response.PermissionResponse;
 import vn.io.rento.auth.dto.response.RoleResponse;
-import vn.io.rento.auth.entity.Permission;
 import vn.io.rento.auth.entity.Role;
 
 import java.util.stream.Collectors;

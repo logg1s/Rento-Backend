@@ -22,7 +22,7 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_POST_ENDPOINTS = {
-            "/auth/token", "/auth/validate", "/auth/logout", "/auth/refresh"
+            "/auth/token", "/auth/validate", "/auth/logout", "/auth/refresh", "/users"
     };
     private final CustomJwtDecoder customJwtDecoder;
     private final String prefixPath = "/v1";
